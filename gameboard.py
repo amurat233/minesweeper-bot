@@ -28,8 +28,8 @@ class GameBoard:
             self.__neighbours[row][col] = -1
         for row, col in self.__mines:
             for x_off, y_off in [(1,1), (1,0), (1,-1), (0,1), (0,-1), (-1,1), (-1,0), (-1,-1)]:
-                if (row + x_off >= 0 and row + x_off < self.rows) and (col + y_off >= 0 and col + y_off < self.cols) and self.__neighbours[row+x_off][col+y_off] != -1:
-                    self.__neighbours[row+x_off][col+y_off] += 1
+                if (row + y_off >= 0 and row + y_off < self.rows) and (col + x_off >= 0 and col + x_off < self.cols) and self.__neighbours[row+y_off][col+x_off] != -1:
+                    self.__neighbours[row+y_off][col+x_off] += 1
 
     # flags a mine, if already flagged removes flag
     def flag(self, row, col):
@@ -51,21 +51,22 @@ class GameBoard:
         if self.__hidden[row][col] == 0:
             return True
         elif (row,col) in self.__mines:
-            self.lost == True
+            self.lost = True
             return False
         
         if self.__neighbours[row][col] == 0:
+            print("flood filling")
             self.__flood_fill(row, col)
         else:
-            self.__hidden[row][col] == 0
+            self.__hidden[row][col] = 0
     
     def __flood_fill(self, row, col):
         if self.__hidden[row][col]:
             self.__hidden[row][col] = 0 # unhides current cell
             # attempt to unhide all neighbouring cells recursively
             for x_off, y_off in [(1,1), (1,0), (1,-1), (0,1), (0,-1), (-1,1), (-1,0), (-1,-1)]:
-                if (row + x_off >= 0 and row + x_off < self.rows) and (col + y_off >= 0 and col + y_off < self.cols) and self.__neighbours[row+x_off][col+y_off] != -1:
-                    self.__flood_fill(row+x_off,col+y_off)
+                if (row + y_off >= 0 and row + y_off < self.rows) and (col + x_off >= 0 and col + x_off < self.cols) and self.__neighbours[row+y_off][col+x_off] != -1:
+                    self.__flood_fill(row+y_off,col+x_off)
         
     # returns a representation of the board that can be analysed but all the hidden
     # squares are not shown.

@@ -12,20 +12,21 @@ class BotController:
                     continue
                 
                 num_mines = elem
+                num_hidden = self.__count_hidden(r,c)
                 num_flagged = self.__count_flags(r, c)
+
+                if num_hidden + num_flagged == num_mines:
+                    for x_off, y_off in [(1,1), (1,0), (1,-1), (0,1), (0,-1), (-1,1), (-1,0), (-1,-1)]:
+                        if (r + y_off >= 0 and r + y_off < self.board.rows) and (c + x_off >= 0 and c + x_off < self.board.cols):
+                            if board[r+y_off][c+x_off] == -1 and (r+y_off,c+x_off) not in self.board.flags:
+                                self.board.flag(r+y_off,c+x_off)
 
                 if num_flagged == num_mines:
                      for x_off, y_off in [(1,1), (1,0), (1,-1), (0,1), (0,-1), (-1,1), (-1,0), (-1,-1)]:
                         if (r + y_off >= 0 and r + y_off < self.board.rows) and (c + x_off >= 0 and c + x_off < self.board.cols):
                             if board[r+y_off][c+x_off] == -1:
                                 self.board.reveal(r+y_off,c+x_off)
-
-                num_hidden = self.__count_hidden(r,c)
-                if num_hidden == num_mines:
-                    for x_off, y_off in [(1,1), (1,0), (1,-1), (0,1), (0,-1), (-1,1), (-1,0), (-1,-1)]:
-                        if (r + y_off >= 0 and r + y_off < self.board.rows) and (c + x_off >= 0 and c + x_off < self.board.cols):
-                            if board[r+y_off][c+x_off] == -1:
-                                self.board.flag(r+y_off,c+x_off)
+        
         
     # returns (num_hidden, num_flags)
     def __count_hidden(self, row, col):
