@@ -20,7 +20,7 @@ if __name__ == "__main__":
                 
         display.update()
 
-        move = input("Flag (F) or Reveal (R) or Basic (B)?")
+        move = input("Flag (F) or Reveal (R) or Basic (B) or Complex (C)?")
 
         if move.lower() == "f":
             row = int(input("Row:"))
@@ -32,6 +32,8 @@ if __name__ == "__main__":
             board.reveal(row, col)
         elif move.lower() == "b":
             controller.mark_basic_flags()
+        elif move.lower() == "c":
+            controller.mark_complex_flags()
         else:
             running = False
             pygame.quit()

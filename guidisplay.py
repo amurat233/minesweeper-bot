@@ -19,10 +19,10 @@ class GUIDisplay:
         self.draw_grid()
 
     def draw_grid(self):
-        for i in range(self.rows):
-            pygame.draw.line(self.screen, self.line_color, (i * self.grid_size,0), (i*self.grid_size, self.width), )
         for i in range(self.cols):
-            pygame.draw.line(self.screen, self.line_color, (0, i * self.grid_size), (self.height, i*self.grid_size))
+            pygame.draw.line(self.screen, self.line_color, (i * self.grid_size,0), (i*self.grid_size, self.height), )
+        for i in range(self.rows):
+            pygame.draw.line(self.screen, self.line_color, (0, i * self.grid_size), (self.width, i*self.grid_size))
 
     def fill_grid(self):
         board = self.board.get_board()

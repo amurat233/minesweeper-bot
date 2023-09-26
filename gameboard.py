@@ -31,12 +31,16 @@ class GameBoard:
                 if (row + y_off >= 0 and row + y_off < self.rows) and (col + x_off >= 0 and col + x_off < self.cols) and self.__neighbours[row+y_off][col+x_off] != -1:
                     self.__neighbours[row+y_off][col+x_off] += 1
 
-    # flags a mine, if already flagged removes flag
+    # flags a mine
     def flag(self, row, col):
         if self.__hidden[row][col]:
             if (row, col) not in self.flags:
                 self.flags.append((row,col))
-            else:
+    
+    # unflags a mine
+    def unflag(self, row, col):
+        if self.__hidden[row][col]:
+            if (row, col) not in self.flags:
                 self.flags.remove((row,col))
 
     # reveals a square, returns true if square was safe and if square empty than it
