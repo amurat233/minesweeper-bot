@@ -47,7 +47,7 @@ class GameBoard:
     # flood reveals all surrounding empty squares until it sees a non-empty square
     def reveal(self, row, col):
         if self.__first_move:
-            while (row, col) in self.__mines:
+            while (row, col) in self.__mines or self.__neighbours[row][col] != 0:
                 self.__place_mines()
             self.__first_move = False
 
@@ -65,12 +65,16 @@ class GameBoard:
             self.__hidden[row][col] = 0
     
     def __flood_fill(self, row, col):
-        if self.__hidden[row][col]:
-            self.__hidden[row][col] = 0 # unhides current cell
-            # attempt to unhide all neighbouring cells recursively
-            for x_off, y_off in [(1,1), (1,0), (1,-1), (0,1), (0,-1), (-1,1), (-1,0), (-1,-1)]:
-                if (row + y_off >= 0 and row + y_off < self.rows) and (col + x_off >= 0 and col + x_off < self.cols) and self.__neighbours[row+y_off][col+x_off] != -1:
-                    self.__flood_fill(row+y_off,col+x_off)
+        queue = [(row, col)]
+        while queue:
+            row, col = queue.pop(0)
+            if self.__hidden[row][col]:
+                self.__hidden[row][col] = 0 # unhides current cell
+                # attempt to unhide all neighbouring cells recursively
+                if self.__neighbours[row][col] == 0:
+                    for x_off, y_off in [(1,1), (1,0), (1,-1), (0,1), (0,-1), (-1,1), (-1,0), (-1,-1)]:
+                        if (row + y_off >= 0 and row + y_off < self.rows) and (col + x_off >= 0 and col + x_off < self.cols) and self.__neighbours[row+y_off][col+x_off] != -1:
+                            queue.append((row+y_off,col+x_off))
         
     # returns a representation of the board that can be analysed but all the hidden
     # squares are not shown.

@@ -1,4 +1,5 @@
 from gameboard import GameBoard
+import itertools
 
 class BotController:
     def __init__(self, board: GameBoard):
@@ -83,7 +84,7 @@ class BotController:
     
     def __pairs(self):
         board = self.board.get_board()
-        offsets = [[(i,j) for j in range(-2,3)] for i in range(-2,3)]
+        offsets = list(itertools.chain(*[[(i,j) for j in range(-2,3)] for i in range(-2,3)]))
         offsets.remove((0,0))
         pairs = []
 
